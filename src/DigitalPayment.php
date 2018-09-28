@@ -44,16 +44,16 @@ class DigitalPayment extends Payment
             'pz_userId' => $tradeNo,
             'mch_create_ip' => '192.168.1.1',
         ]);
-//var_dump($payload);
+
         //目前只支持支付寶掃碼 
         $result = $this->parseResponse($this->httpClient->post('anpay/pay', $payload));
         $uri = $result['postUrl'];
         unset($result['postUrl']);
 
         $qrcode = $uri . $this->parseForwardResponse($this->httpClient->postUri($uri, $result));
-        var_dump($qrcode);die();    
-        if (isset($imgSrc)) {
-            $result['qrcodeUrl'] = self::QRCODE_IMG_PREFIX . $imgSrc;
+           
+        if (isset($qrcode)) {
+            $result['qrcodeUrl'] = self::QRCODE_IMG_PREFIX . $qrcode;
 
             return $result;
         }

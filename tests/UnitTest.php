@@ -34,68 +34,59 @@ class UnitTest extends TestCase
         $payment = new DigitalPayment($this->merchantId, $this->secretKey);
         $result = $payment->order($tradeNo, $channel, $amount, $notifyUrl);
 
-        //var_dump($result);
+        var_dump($result);
 
         $this->assertContains('IMG|', $result['qrcodeUrl'], '', true);
 
         return $tradeNo;
     }
 
-    // public function testNotifyWebhookVerifyNotifyPayload()
-    // {
-    //     $mock = $this->getMockForTrait(NotifyWebhook::class);
+    public function testNotifyWebhookVerifyNotifyPayload()
+    {
+        $mock = $this->getMockForTrait(NotifyWebhook::class);
 
-    //     $payload = [
-    //         'mchid'       => '4794',
-    //         'fee'         => '3000',
-    //         'pdorderid'   => '201809051111',
-    //         'orderid'     => '201809051111',
-    //         'unit'        => 'fen',
-    //         'status'      => 'success',
-    //         'paychannel'  => 'alipay',
-    //         'time'        => '2018-09-05 18:00:00',
-    //         'sign'        => '31b932118979473a3c4bc264cbdb8c6b',
-    //         'gameSign'    => '265f3d6c74ecee136beefb0eea9e50e1',
-    //     ];
+        $payload = [
+            'mid'         => '68',
+            'code'        => 'SUCCEED',
+            'msg'         => 'OK',
+            'orderNo'     => '201809051111',
+            'amount'      => '10',
+            'orderTime'   => '2018-09-05 18:00:00',
+            'sign'        => '2fdbd6ad0645b615da8ce864babea51c',
+        ];
 
-    //     $this->assertTrue($mock->verifyNotifyPayload($payload, $this->secretKey));
-    // }
+        $this->assertTrue($mock->verifyNotifyPayload($payload, $this->secretKey));
+    }
 
-    // public function testNotifyWebhookParseNotifyPayload()
-    // {
-    //     $mock = $this->getMockForTrait(NotifyWebhook::class);
+    public function testNotifyWebhookParseNotifyPayload()
+    {
+        $mock = $this->getMockForTrait(NotifyWebhook::class);
 
-    //     $payload = [
-    //         'mchid'       => '4794',
-    //         'fee'         => '3000',
-    //         'pdorderid'   => '201809051111',
-    //         'orderid'     => '201809051111',
-    //         'unit'        => 'fen',
-    //         'status'      => 'success',
-    //         'paychannel'  => 'alipay',
-    //         'time'        => '2018-09-05 18:00:00',
-    //         'sign'        => '31b932118979473a3c4bc264cbdb8c6b',
-    //         'gameSign'    => '265f3d6c74ecee136beefb0eea9e50e1',
-    //     ];
+        $payload = [
+            'mid'         => '68',
+            'code'        => 'SUCCEED',
+            'msg'         => 'OK',
+            'orderNo'     => '201809051111',
+            'amount'      => '10',
+            'orderTime'   => '2018-09-05 18:00:00',
+            'sign'        => '2fdbd6ad0645b615da8ce864babea51c',
+        ];
 
-    //     $this->assertEquals([
-    //         'mchid'       => '4794',
-    //         'fee'         => '3000',
-    //         'pdorderid'   => '201809051111',
-    //         'orderid'     => '201809051111',
-    //         'unit'        => 'fen',
-    //         'status'      => 'success',
-    //         'paychannel'  => 'alipay',
-    //         'time'        => '2018-09-05 18:00:00',
-    //         'sign'        => '31b932118979473a3c4bc264cbdb8c6b',
-    //         'gameSign'    => '265f3d6c74ecee136beefb0eea9e50e1',
-    //     ], $mock->parseNotifyPayload($payload, $this->secretKey));
-    // }
+        $this->assertEquals([
+            'mid'         => '68',
+            'code'        => 'SUCCEED',
+            'msg'         => 'OK',
+            'orderNo'     => '201809051111',
+            'amount'      => '10',
+            'orderTime'   => '2018-09-05 18:00:00',
+            'sign'        => '2fdbd6ad0645b615da8ce864babea51c',
+        ], $mock->parseNotifyPayload($payload, $this->secretKey));
+    }
 
-    // public function testNotifyWebhookSuccessNotifyResponse()
-    // {
-    //     $mock = $this->getMockForTrait(NotifyWebhook::class);
+    public function testNotifyWebhookSuccessNotifyResponse()
+    {
+        $mock = $this->getMockForTrait(NotifyWebhook::class);
 
-    //     $this->assertEquals('success', $mock->successNotifyResponse());
-    // }
+        $this->assertEquals('success', $mock->successNotifyResponse());
+    }
 }

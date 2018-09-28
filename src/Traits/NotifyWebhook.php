@@ -15,13 +15,13 @@ trait NotifyWebhook
      */
     public function verifyNotifyPayload(array $payload, $secretKey)
     {
-        if (!isset($payload['gameSign'])) {
+        if (!isset($payload['sign'])) {
             return false;
         }
 
-        $signature = $payload['gameSign'];
+        $signature = $payload['sign'];
 
-        return Signature::validateNotify($payload, $secretKey, $signature);
+        return Signature::validate($payload, $secretKey, $signature);
     }
 
     /**

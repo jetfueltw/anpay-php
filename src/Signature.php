@@ -19,6 +19,20 @@ class Signature
     }
 
     /**
+     * Generate query signature.
+     *
+     * @param array $payload
+     * @param string $secretKey
+     * @return string
+     */
+    public static function generateQuery(array $payload, $secretKey)
+    {
+        $baseString = self::md5Hash($secretKey) . self::buildQueryBaseString($payload);
+
+        return self::md5Hash($baseString);
+    }
+
+    /**
      * Generate notify signature.
      *
      * @param array $payload
@@ -53,12 +67,11 @@ class Signature
         return $payload['mid'] . $payload['orderNo'] . $payload['amount'];
     }
 
-    private static function buildBaseNotifyString(array $payload)
+    private static function buildQueryBaseString(array $payload)
     {
-        // return $payload['mchid'] . $payload['orderid'] .$payload['fee'] . 'fen' . $payload['status'] .$payload['paychannel'];
-        //因為gameSign才有key比較安全, 所以對gameSign做驗證
-        return $payload['mchid'] . $payload['orderid'] . $payload['paychannel'] . $payload['status'];
+        return $payload['mid'] . $payload['orderNo'] ;
     }
+
 
     private static function md5Hash($data)
     {

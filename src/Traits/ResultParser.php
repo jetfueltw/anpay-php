@@ -14,7 +14,7 @@ trait ResultParser
      */
     public function parseResponse($response)
     {   
-        var_dump($response);
+        
         $html = HtmlDomParser::str_get_html($response);
         $result = [];
         try {
@@ -22,7 +22,7 @@ trait ResultParser
                 $form = $html->find('form', 0);
                 if (isset($form)) {
                     $result['postUrl'] = $form->action;
-                    $inputs = $form->children();//var_dump($inputs->name);
+                    $inputs = $form->children();
                     foreach ($inputs as $input) {
                         $name = $input->name;
                         $value = $input->value;
@@ -48,9 +48,9 @@ trait ResultParser
      */
     public function parseForwardResponse($response)
     {   
-        //var_dump($response);
-        $html = HtmlDomParser::str_get_html($response);
         
+        $html = HtmlDomParser::str_get_html($response);
+
         if ($html) {
             $imgSrc = $html->find('img', 0);
 
@@ -62,4 +62,14 @@ trait ResultParser
         return null;
     }
 
+    /**
+     * Parse JSON format response to array.
+     *
+     * @param string $response
+     * @return array
+     */
+    public function parseQueryResponse($response)
+    {
+        return json_decode($response, true);
+    }
 }
